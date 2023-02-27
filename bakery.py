@@ -17,8 +17,8 @@ in_ = [0] * NUM_THREADS
 
 
 def process(tid, num_runs=1):
-    """
-    Simulates a process.
+    """Simulates a process.
+
     Arguments:
         tid      -- thread id
         num_runs -- number of executions of the critical section, if not declared set to 1
@@ -28,11 +28,13 @@ def process(tid, num_runs=1):
 
     for n in range(num_runs):
         i = tid
+        # assign order number
         in_[i] = 1
         num[i] = 1 + max(num)
         in_[i] = 0
 
         for j in range(NUM_THREADS):
+            # wait if process is assign its order number at the moment
             while in_[j] == 1:
                 continue
 
