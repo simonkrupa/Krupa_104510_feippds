@@ -10,6 +10,7 @@ __license__ = "MIT"
 
 from fei.ppds import Thread
 
+NUM_RUNS = 1
 NUM_THREADS = 8
 num = [0] * NUM_THREADS
 in_ = [0] * NUM_THREADS
@@ -47,5 +48,5 @@ def process(tid, num_runs=1):
 
 
 if __name__ == '__main__':
-    threads = [Thread(process, i, 2) for i in range(NUM_THREADS)]
+    threads = [Thread(process, i, NUM_RUNS) for i in range(NUM_THREADS)]
     [t.join() for t in threads]
