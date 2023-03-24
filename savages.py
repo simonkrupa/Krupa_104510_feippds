@@ -1,14 +1,17 @@
-"""This module implements dinning philosophers problem.
- Solution using a waiter is implemented.
- Waiter is represented by a Semaphore(4).
+"""This module implements feasting savages problem.
+Implementation with one cook (chef).
  """
 
-__author__ = "Tomáš Vavro"
-__email__ = "xvavro@stuba.sk"
+__author__ = "Tomáš Vavro, Marián Šebeňa"
+__email__ = "xkrupas@stuba.sk"
 __license__ = "MIT"
+
 
 from fei.ppds import Thread, Mutex, Semaphore, print
 from time import sleep
+
+NUMBER_OF_SAVAGES = 3
+SIZE_OF_POT = 5
 
 
 class Shared:
@@ -17,7 +20,7 @@ class Shared:
         """Initialize an instance of Shared."""
         self.mutex = Mutex()
         self.mutex_barrier = Mutex()
-        self.servings = 5
+        self.servings = SIZE_OF_POT
         self.count = 0
         self.fullPot = Semaphore(0)
         self.emptyPot = Semaphore(0)
@@ -25,62 +28,57 @@ class Shared:
         self.barrier2 = Semaphore(0)
 
 
-def getServingFromPot(shared, savage_id):
-    print(f"divoch {savage_id}: beriem si porciu")
+def get_serving_from_pot(shared, savage_id):
+    print(f"Divoch {savage_id}: beriem si porciu.")
     shared.servings = shared.servings - 1
+    sleep(1)
 
 
-# konkurentne vykonavany kod print("divoch %2d: hodujem" % savage_id)
 def cook(shared):
     while True:
         shared.emptyPot.wait()
-        print("kuchar: varim")
+        print("Kuchar: varim")
+        sleep(5)
         shared.servings = 5
-        print("kuchar: uvarene")
+        print("Kuchar: uvarene")
         shared.fullPot.signal()
-        print("kuchar: oddychujem")
+        print("Kuchar: oddychujem")
 
 
 def savage(shared, savage_id):
-    #     barrier1.wait("divoch %2d: prisiel som na veceru, uz nas je %2d", savage_id, print_each_thread = True)
-    #     barrier2.wait("divoch %2d: uz sme vsetci, zaciname vecerat", savage_id, print_last_thread = True)
     while True:
         shared.mutex_barrier.lock()
         shared.count += 1
-        if shared.count == M:
-            print(f'thread {savage_id} unlocked barrier')
-            shared.barrier1.signal(M)
+        if shared.count == NUMBER_OF_SAVAGES:
+            print(f'Divoch {savage_id}: unlocked barrier')
+            shared.barrier1.signal(NUMBER_OF_SAVAGES)
         shared.mutex_barrier.unlock()
-        print(f'thread {savage_id} waiting barrier')
         shared.barrier1.wait()
 
-        print(f'Thread {savage_id} in KO')
+        print(f'Divoch {savage_id}: in KO')
         shared.mutex.lock()
-        print(f"divoch {savage_id}: pocet zostavajucich porcii v hrnci je {shared.servings}")
+        print(f"Divoch {savage_id}: pocet zostavajucich porcii v hrnci je {shared.servings}")
         if shared.servings == 0:
-            print(f"divoch {savage_id}: budim kuchara")
+            print(f"Divoch {savage_id}: budim kuchara")
             shared.emptyPot.signal()
             shared.fullPot.wait()
-        getServingFromPot(shared, savage_id)
+        get_serving_from_pot(shared, savage_id)
         shared.mutex.unlock()
 
         shared.mutex_barrier.lock()
         shared.count -= 1
         if shared.count == 0:
-            shared.barrier2.signal(M)
+            shared.barrier2.signal(NUMBER_OF_SAVAGES)
         shared.mutex_barrier.unlock()
         shared.barrier2.wait()
+        sleep(3)
 
-
-
-N = 4
-M = 3
 
 if __name__ == '__main__':
     shared = Shared()
 
     threads = []
-    for i in range(M):
+    for i in range(NUMBER_OF_SAVAGES):
         threads.append(Thread(savage, shared, i))
     chef = Thread(cook, shared)
 
