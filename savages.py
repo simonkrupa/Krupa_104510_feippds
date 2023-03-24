@@ -6,6 +6,7 @@ __author__ = "Tomáš Vavro, Marián Šebeňa, Šimon Krupa"
 __email__ = "xkrupas@stuba.sk"
 __license__ = "MIT"
 
+import random
 
 from fei.ppds import Thread, Mutex, Semaphore, print
 from time import sleep
@@ -69,7 +70,7 @@ def savage(shared, savage_id):
         shared.mutex_barrier.lock()
         shared.count += 1
         if shared.count == NUMBER_OF_SAVAGES:
-            print(f'Savage {savage_id}: unlocked barrier')
+            print(f'Savage {savage_id}: unlocked barrier, all savages ready')
             shared.barrier1.signal(NUMBER_OF_SAVAGES)
         shared.mutex_barrier.unlock()
         shared.barrier1.wait()
@@ -81,8 +82,12 @@ def savage(shared, savage_id):
             print(f"Savage {savage_id}: pot is empty, waking up cook")
             shared.emptyPot.signal()
             shared.fullPot.wait()
+            print(f'Pot is full')
         get_serving_from_pot(shared, savage_id)
         shared.mutex.unlock()
+
+        print(f'Savage {savage_id}: eating')
+        sleep(random.randint(2, 4))
 
         shared.mutex_barrier.lock()
         shared.count -= 1
