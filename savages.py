@@ -2,7 +2,7 @@
 Implementation with one cook (chef).
  """
 
-__author__ = "Tomáš Vavro, Marián Šebeňa"
+__author__ = "Tomáš Vavro, Marián Šebeňa, Šimon Krupa"
 __email__ = "xkrupas@stuba.sk"
 __license__ = "MIT"
 
@@ -10,14 +10,18 @@ __license__ = "MIT"
 from fei.ppds import Thread, Mutex, Semaphore, print
 from time import sleep
 
-NUMBER_OF_SAVAGES = 3
+NUMBER_OF_SAVAGES = 4
 SIZE_OF_POT = 5
 
 
 class Shared:
     """Represent shared data for all threads."""
     def __init__(self):
-        """Initialize an instance of Shared."""
+        """Initialize an instance of Shared.
+        Two mutexes and two semaphores for reusable barrier.
+        Counter and number of servings.
+        Two semaphores for signalization.
+        """
         self.mutex = Mutex()
         self.mutex_barrier = Mutex()
         self.servings = SIZE_OF_POT
@@ -29,37 +33,52 @@ class Shared:
 
 
 def get_serving_from_pot(shared, savage_id):
-    print(f"Divoch {savage_id}: beriem si porciu.")
+    """Function for simulating savage that is getting his serving from pot.
+    Edits number of servings in pot.
+
+    :param shared: instance of object Shared
+    :param savage_id: id of savage(thread)
+    """
+    print(f"Savage {savage_id}: taking a serving.")
     shared.servings = shared.servings - 1
     sleep(1)
 
 
 def cook(shared):
+    """Function that creates functionality of single cook in this implementation.
+
+    :param shared: instance of object Shared
+    """
     while True:
         shared.emptyPot.wait()
-        print("Kuchar: varim")
+        print("COOK: cooking")
         sleep(5)
-        shared.servings = 5
-        print("Kuchar: uvarene")
+        shared.servings = SIZE_OF_POT
+        print("COOK: finished cooking")
         shared.fullPot.signal()
-        print("Kuchar: oddychujem")
 
 
 def savage(shared, savage_id):
+    """Function that creates functionality for each savage.
+    Uses reusable barrier, signalization and mutexes.
+
+    :param shared: instance of object Shared
+    :param savage_id: id of savage(thread)
+    """
     while True:
         shared.mutex_barrier.lock()
         shared.count += 1
         if shared.count == NUMBER_OF_SAVAGES:
-            print(f'Divoch {savage_id}: unlocked barrier')
+            print(f'Savage {savage_id}: unlocked barrier')
             shared.barrier1.signal(NUMBER_OF_SAVAGES)
         shared.mutex_barrier.unlock()
         shared.barrier1.wait()
 
-        print(f'Divoch {savage_id}: in KO')
+        print(f'Savage {savage_id}: in KS')
         shared.mutex.lock()
-        print(f"Divoch {savage_id}: pocet zostavajucich porcii v hrnci je {shared.servings}")
+        print(f"Savage {savage_id}: number of remaining servings in pot {shared.servings}")
         if shared.servings == 0:
-            print(f"Divoch {savage_id}: budim kuchara")
+            print(f"Savage {savage_id}: pot is empty, waking up cook")
             shared.emptyPot.signal()
             shared.fullPot.wait()
         get_serving_from_pot(shared, savage_id)
@@ -68,6 +87,7 @@ def savage(shared, savage_id):
         shared.mutex_barrier.lock()
         shared.count -= 1
         if shared.count == 0:
+            print(f'Savage {savage_id}: locked barrier')
             shared.barrier2.signal(NUMBER_OF_SAVAGES)
         shared.mutex_barrier.unlock()
         shared.barrier2.wait()
