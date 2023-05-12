@@ -1,0 +1,91 @@
+TESTS WITH 300x300 images:
+
+Time to transform with gpu: 20.43313717842102
+Time to transform with cpu: 0.5083584785461426
+Time to transform with gpu: 20.325753450393677
+Time to transform with cpu: 0.4999408721923828
+Time to transform with gpu: 20.102445602416992
+Time to transform with cpu: 0.5035049915313721
+Time to transform with gpu: 20.447696685791016
+Time to transform with cpu: 0.5117566585540771
+Time to transform with gpu: 19.97653365135193
+Time to transform with cpu: 0.5041036605834961
+Time to transform with gpu: 19.933034658432007
+Time to transform with cpu: 0.5173845291137695
+Time to transform with gpu: 20.605600357055664
+Time to transform with cpu: 0.5032193660736084
+Time to transform with gpu: 20.809123992919922
+Time to transform with cpu: 0.5188329219818115
+Time to transform with gpu: 20.315914154052734
+Time to transform with cpu: 0.5150816440582275
+Time to transform with gpu: 20.539143800735474
+Time to transform with cpu: 0.5027387142181396
+Time to transform with gpu: 20.600008487701416
+Time to transform with cpu: 0.5056777000427246
+Time to transform with gpu: 20.54900050163269
+Time to transform with cpu: 0.5006744861602783
+Time to transform with gpu: 20.58749222755432
+Time to transform with cpu: 0.504058837890625
+Time to transform with gpu: 20.602991104125977
+Time to transform with cpu: 0.5015449523925781
+Time to transform with gpu: 20.15253257751465
+Time to transform with cpu: 0.5063912868499756
+Time to transform with gpu: 20.367269277572632
+Time to transform with cpu: 0.5022714138031006
+Time to transform with gpu: 20.80423069000244
+Time to transform with cpu: 0.5024778842926025
+Time to transform with gpu: 20.25813317298889
+Time to transform with cpu: 0.5020310878753662
+Time to transform with gpu: 20.20876669883728
+Time to transform with cpu: 0.5027143955230713
+Time to transform with gpu: 20.873071432113647
+Time to transform with cpu: 0.5150845050811768
+
+
+TESTS WITH 400x400 images:
+
+Time to transform with gpu image1: 36.77985882759094
+Time to transform with cpu image1: 0.901756763458252
+Time to transform with gpu image2: 36.703821659088135
+Time to transform with cpu image2: 0.8947043418884277
+Time to transform with gpu image3: 36.92966651916504
+Time to transform with cpu image3: 0.8984410762786865
+Time to transform with gpu image4: 36.543044090270996
+Time to transform with cpu image4: 0.894233226776123
+Time to transform with gpu image5: 36.45388340950012
+Time to transform with cpu image5: 0.8941404819488525
+Time to transform with gpu image6: 36.05809211730957
+Time to transform with cpu image6: 0.9083788394927979
+Time to transform with gpu image7: 36.51578903198242
+Time to transform with cpu image7: 0.8996286392211914
+Time to transform with gpu image8: 36.7774121761322
+Time to transform with cpu image8: 0.9241411685943604
+Time to transform with gpu image9: 39.083882331848145
+Time to transform with cpu image9: 0.9207010269165039
+Time to transform with gpu image10: 37.72234582901001
+Time to transform with cpu image10: 0.8985366821289062
+Time to transform with gpu image11: 37.17579698562622
+Time to transform with cpu image11: 0.8985061645507812
+Time to transform with gpu image12: 38.094544887542725
+Time to transform with cpu image12: 0.9016551971435547
+Time to transform with gpu image13: 38.601351261138916
+Time to transform with cpu image13: 0.9061503410339355
+Time to transform with gpu image14: 38.87632775306702
+Time to transform with cpu image14: 0.8995599746704102
+Time to transform with gpu image15: 36.94434714317322
+Time to transform with cpu image15: 0.8861181735992432
+Time to transform with gpu image16: 38.11807560920715
+Time to transform with cpu image16: 0.9256258010864258
+Time to transform with gpu image17: 35.74227952957153
+Time to transform with cpu image17: 0.8886187076568604
+Time to transform with gpu image18: 35.58658790588379
+Time to transform with cpu image18: 0.8895680904388428
+Time to transform with gpu image19: 36.20050811767578
+Time to transform with cpu image19: 0.8906724452972412
+Time to transform with gpu image20: 35.264817237854004
+Time to transform with cpu image20: 0.8894331455230713
+
+
+
+
+
