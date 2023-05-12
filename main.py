@@ -8,6 +8,8 @@ from numba import cuda
 import time
 import matplotlib.pyplot as plt
 import cv2
+import os
+import glob
 
 
 @cuda.jit
@@ -40,17 +42,28 @@ def prepare_data_for_gpu(pixels):
 
 
 if __name__ == "__main__":
+    image_directory = "images"
+    images_files = glob.glob(os.path.join(image_directory, "*.jpg"))
+    for index, images_file in enumerate(images_files):
+        # GPU
+        start = time.time()
+        pixels = plt.imread(images_file)
+        pixels = cv2.resize(pixels, (300, 300))
 
-    start = time.time()
-    pixels = plt.imread("images/image1.jpg")
-    pixels = cv2.resize(pixels, (300, 300))
+        gray_image = prepare_data_for_gpu(pixels)
 
-    gray_image = prepare_data_for_gpu(pixels)
-    # gray_image = transform_to_grayscale_cpu(pixels)
-    end = time.time()
-    print(end - start)
-    plt.imshow(gray_image, cmap="gray")
-    plt.show()
+        plt.imsave("grayscaled_images/gs_image_gpu"+str(index+1)+".jpg", gray_image, format="jpg", cmap="gray")
+        end = time.time()
+        print(f'Time to transform with gpu image{index+1}: {end - start}')
 
-    # plt.imsave("m-i-gs3.jpg", gray_image, format="jpg", cmap="gray")
+        # CPU
+        start = time.time()
+        pixels = plt.imread(images_file)
+        pixels = cv2.resize(pixels, (300, 300))
+
+        gray_image = transform_to_grayscale_cpu(pixels)
+        plt.imsave("grayscaled_images/gs_image_cpu"+str(index+1)+".jpg", gray_image, format="jpg", cmap="gray")
+        end = time.time()
+        print(f'Time to transform with cpu image{index+1}: {end - start}')
+
 
